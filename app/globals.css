@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --background: white;
+  --foreground: black;
+  --vertical-padding: 10%;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  height: 100vh;
+  padding-top: 10%;
+  padding-bottom: 15%;
+  padding-left: var(--vertical-padding);
+  padding-right: var(--vertical-padding);
+  display: flex;
+  justify-content: center;
+}
