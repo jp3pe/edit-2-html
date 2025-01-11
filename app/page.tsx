@@ -1,3 +1,6 @@
+import Editor from "./components/editor";
+import styles from './styles.module.css'
+
 export default function Home() {
-  return <div></div>;
+  return <Editor className={styles.editor}/>;
 }

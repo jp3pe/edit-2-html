@@ -1,0 +1,5 @@
+/* Because edit-2-html project is single route project, every css styles except for global are written here. */
+.editor {
+	max-width: 1000px;
+	overflow-wrap: break-word;
+}
