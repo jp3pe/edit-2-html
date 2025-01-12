@@ -1,5 +1,11 @@
 /* Because edit-2-html project is single route project, every css styles except for global are written here. */
-.editor {
-	max-width: 100%;
-	overflow-wrap: break-word;
+.components-editor {
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+.components-title {
+  margin-bottom: 30px;
+  font-size: 2rem;
+  font-weight: bold;
 }

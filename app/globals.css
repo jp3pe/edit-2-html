@@ -7,6 +7,9 @@
   --foreground: black;
   --vertical-padding: 10%;
 }
+html {
+  font-size: medium;
+}
 
 body {
   color: var(--foreground);
