@@ -3,6 +3,7 @@ import Italic from "./Italic";
 import Paragraph from "./Paragraph";
 import Strikethrough from "./Strikethrough";
 import Title from "./Title";
+import Toolbar from "./Toolbar";
 import Underline from "./Underline";
 
 interface EditorProps {
@@ -21,6 +22,8 @@ export default function Editor({ className }: EditorProps) {
       <Paragraph innerText="샘플 텍스트입니다." />
       <Paragraph innerText="샘플 텍스트입니다." />
       <Paragraph innerText="샘플 텍스트입니다." />
+      {/* Toolbar 테스트용 import */}
+      <Toolbar />
     </div>
   );
 }
