@@ -6,6 +6,7 @@
   --background: white;
   --foreground: black;
   --vertical-padding: 10%;
+  --arrow-color: #B4B3B1;
 }
 html {
   font-size: medium;
