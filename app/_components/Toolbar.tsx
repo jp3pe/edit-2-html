@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAngleDown,
@@ -13,8 +14,8 @@ import {
   faStrikethrough,
   faUnderline,
 } from "@fortawesome/free-solid-svg-icons";
-import InsertFontIcon from "@/public/icons/font-color-icon.svg";
 
+import InsertFontIcon from "@/public/icons/font-color-icon.svg";
 import styles from "@/app/styles.module.css";
 
 interface ToolbarProps {}
@@ -33,12 +34,19 @@ export default function Toolbar({}: ToolbarProps) {
           <p>Info</p>
         </div>
       </a>
-      {/* TODO: palets horizon line */}
-      <p>Text</p>
-      <FontAwesomeIcon
-        icon={faAngleDown}
-        style={{ color: "var(--arrow-color)" }}
-      />
+      <div
+        className={classNames(
+          styles["toolbar-text"],
+          styles["horizontal-line"]
+        )}
+      >
+        <p>Text</p>
+        <FontAwesomeIcon
+          icon={faAngleDown}
+          style={{ color: "var(--arrow-color)" }}
+          className={styles["down-arrow-margin"]}
+        />
+      </div>
       <FontAwesomeIcon icon={faBold} />
       <FontAwesomeIcon icon={faItalic} />
       <FontAwesomeIcon icon={faUnderline} />
@@ -50,17 +58,25 @@ export default function Toolbar({}: ToolbarProps) {
         <FontAwesomeIcon
           icon={faAngleDown}
           style={{ color: "var(--arrow-color)" }}
+          className={styles["down-arrow-margin"]}
         />
       </div>
       <div className={styles["toolbar-font-color"]}>
-        <Image src={InsertFontIcon} alt={"A icon surrounded with a square."} />
+        <Image
+          src={InsertFontIcon}
+          alt={"A icon surrounded with a square."}
+          className={styles["toolbar-font-color-icon"]}
+        />
         <FontAwesomeIcon
           icon={faAngleDown}
           style={{ color: "var(--arrow-color)" }}
+          className={styles["down-arrow-margin"]}
         />
       </div>
-      {/* TODO: palets horizon line */}
-      <FontAwesomeIcon icon={faEllipsis} />
+      <FontAwesomeIcon
+        icon={faEllipsis}
+        className={styles["horizontal-line"]}
+      />
     </div>
   );
 }
