@@ -1,5 +1,5 @@
 interface EditorProps {
-  className: string;
+  className: string
 }
 
 export default function Editor({ className }: EditorProps) {

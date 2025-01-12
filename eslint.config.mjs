@@ -11,6 +11,10 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    // Disable the error for empty members in an interface when extending another interface.
+    rules: { "@typescript-eslint/no-empty-object-type": "off" },
+  },
 ];
 
 export default eslintConfig;

@@ -1,4 +1,4 @@
-import Editor from "./components/editor";
+import Editor from "./_components/Editor";
 import styles from './styles.module.css'
 
 export default function Home() {
