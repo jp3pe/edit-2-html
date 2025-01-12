@@ -3,5 +3,5 @@ interface EditorProps {
 }
 
 export default function Editor({ className }: EditorProps) {
-  return <div className={className}>dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd</div>;
+  return <div className={className}></div>;
 }
