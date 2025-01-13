@@ -6,7 +6,7 @@
 
 .components-title {
   margin-bottom: 30px;
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: bold;
 }
 
@@ -20,6 +20,10 @@
 }
 
 .toolbar {
+  position: absolute;
+  z-index: 2;
+  top: 350px;
+  left: 250px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -30,6 +34,7 @@
   border: solid 1px var(--arrow-color);
   border-radius: 10px;
   font-size: 2rem;
+  background-color: white;
 }
 
 .toolbar > a {
