@@ -74,3 +74,8 @@
 .toolbar-font-color-icon {
   height: 40px;
 }
+
+.text-area {
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
+}
