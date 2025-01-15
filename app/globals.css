@@ -6,7 +6,8 @@
   --background: white;
   --foreground: black;
   --vertical-padding: 10%;
-  --arrow-color: #B4B3B1;
+  --arrow-color: #b4b3b1;
+  --toolbar-width: 810px;
 }
 html {
   font-size: medium;

@@ -23,12 +23,12 @@
   position: absolute;
   z-index: 2;
   top: 350px;
-  left: 250px;
+  left: calc(50% - var(--toolbar-width) / 2);
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 50px;
-  width: 810px;
+  width: var(--toolbar-width);
   padding-left: 1rem;
   padding-right: 0.5rem;
   border: solid 1px var(--arrow-color);
