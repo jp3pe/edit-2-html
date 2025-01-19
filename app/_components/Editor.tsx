@@ -20,7 +20,9 @@ export default function Editor({ className }: EditorProps) {
       console.log("Selection:", document.getSelection()?.toString());
     });
     return () => {
-      console.log(`cleanup finished!`);
+      document.removeEventListener("selectionchange", () => {
+        console.log(`cleanup finished!`);
+      });
     };
   }, []);
 
