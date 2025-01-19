@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect } from "react";
 import Bold from "./Bold";
 import Italic from "./Italic";
 import Paragraph from "./Paragraph";
@@ -12,6 +15,15 @@ interface EditorProps {
 }
 
 export default function Editor({ className }: EditorProps) {
+  useEffect(() => {
+    document.addEventListener("selectionchange", () => {
+      console.log("Selection:", document.getSelection()?.toString());
+    });
+    return () => {
+      console.log(`cleanup finished!`);
+    };
+  }, []);
+
   return (
     <div className={className}>
       <Title innerText="Title" />
