@@ -22,7 +22,6 @@
 .toolbar {
   position: absolute;
   z-index: 2;
-  top: 350px;
   left: calc(50% - var(--toolbar-width) / 2);
   display: flex;
   justify-content: space-between;

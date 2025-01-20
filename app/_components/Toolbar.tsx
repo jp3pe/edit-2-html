@@ -18,11 +18,19 @@ import {
 import InsertFontIcon from "@/public/icons/font-color-icon.svg";
 import styles from "@/app/styles.module.css";
 
-interface ToolbarProps {}
+interface ToolbarProps {
+  coordinateY: number;
+}
 
-export default function Toolbar({}: ToolbarProps) {
+export default function Toolbar({ coordinateY: coordinateY }: ToolbarProps) {
   return (
-    <div className={styles.toolbar}>
+    <div
+      className={styles.toolbar}
+      // TODO: Remove hardcoded value in style
+      style={{
+        top: `${coordinateY - 80}px`,
+      }}
+    >
       {/* TODO: Replace a tag into next Link */}
       <a href="#">
         <div className={styles["toolbar-info"]}>

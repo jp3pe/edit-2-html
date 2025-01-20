@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Bold from "./Bold";
 import Italic from "./Italic";
 import Paragraph from "./Paragraph";
@@ -16,15 +16,16 @@ interface EditorProps {
 
 export default function Editor({ className }: EditorProps) {
   useEffect(() => {
-    document.addEventListener("selectionchange", () => {
-      console.log("Selection:", document.getSelection()?.toString());
+    document.addEventListener("click", (e: MouseEvent) => {
+      const y = e.clientY;
+      setToolbarCoordinateY(y);
     });
     return () => {
-      document.removeEventListener("selectionchange", () => {
-        console.log(`cleanup finished!`);
-      });
+      document.removeEventListener("click", () => {});
     };
   }, []);
+
+  const [toolbarCoordinateY, setToolbarCoordinateY] = useState(350);
 
   return (
     <div className={className}>
@@ -51,8 +52,7 @@ export default function Editor({ className }: EditorProps) {
       <TextArea textComponent={<Paragraph innerText="샘플 텍스트입니다." />} />
       <TextArea textComponent={<Paragraph innerText="샘플 텍스트입니다." />} />
       <TextArea textComponent={<Paragraph innerText="샘플 텍스트입니다." />} />
-      {/* Toolbar 테스트용 import */}
-      <Toolbar />
+      <Toolbar coordinateY={toolbarCoordinateY} />
     </div>
   );
 }
