@@ -20,15 +20,20 @@ import styles from "@/app/styles.module.css";
 
 interface ToolbarProps {
   coordinateY: number;
+  displayPropertyValue: string;
 }
 
-export default function Toolbar({ coordinateY: coordinateY }: ToolbarProps) {
+export default function Toolbar({
+  coordinateY: coordinateY,
+  displayPropertyValue: displayPropertyValue,
+}: ToolbarProps) {
   return (
     <div
       className={styles.toolbar}
       // TODO: Remove hardcoded value for plus in style
       style={{
         top: `${coordinateY - 50}px`,
+        display: displayPropertyValue,
       }}
     >
       {/* TODO: Replace a tag into next Link */}

@@ -18,10 +18,16 @@ export default function Editor({ className }: EditorProps) {
   useEffect(() => {
     document.addEventListener("click", (e: MouseEvent) => {
       const targetElement: HTMLElement = e.target as HTMLElement;
-      const targetElementArea = targetElement.getBoundingClientRect();
 
-      const targetElementY = targetElementArea.top;
-      setToolbarCoordinateY(targetElementY);
+      if (targetElement.closest("#editor")) {
+        setDisplayPropertyValue("flex");
+
+        const targetElementArea = targetElement.getBoundingClientRect();
+        const targetElementY = targetElementArea.top;
+        setToolbarCoordinateY(targetElementY);
+      } else {
+        setDisplayPropertyValue("none");
+      }
     });
     return () => {
       document.removeEventListener("click", () => {});
@@ -29,9 +35,10 @@ export default function Editor({ className }: EditorProps) {
   }, []);
 
   const [toolbarCoordinateY, setToolbarCoordinateY] = useState(350);
+  const [displayPropertyValue, setDisplayPropertyValue] = useState("none");
 
   return (
-    <div className={className}>
+    <div id="editor" className={className}>
       <Title innerText="Title" />
       <TextArea textComponent={<Paragraph innerText="샘플 텍스트입니다." />} />
       <TextArea
@@ -55,7 +62,10 @@ export default function Editor({ className }: EditorProps) {
       <TextArea textComponent={<Paragraph innerText="샘플 텍스트입니다." />} />
       <TextArea textComponent={<Paragraph innerText="샘플 텍스트입니다." />} />
       <TextArea textComponent={<Paragraph innerText="샘플 텍스트입니다." />} />
-      <Toolbar coordinateY={toolbarCoordinateY} />
+      <Toolbar
+        coordinateY={toolbarCoordinateY}
+        displayPropertyValue={displayPropertyValue}
+      />
     </div>
   );
 }
