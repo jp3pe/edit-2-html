@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Bold from "./Bold";
 import Italic from "./Italic";
 import Paragraph from "./Paragraph";
@@ -12,8 +15,30 @@ interface EditorProps {
 }
 
 export default function Editor({ className }: EditorProps) {
+  useEffect(() => {
+    document.addEventListener("click", (e: MouseEvent) => {
+      const targetElement: HTMLElement = e.target as HTMLElement;
+
+      if (targetElement.closest("#editor")) {
+        setDisplayPropertyValue("flex");
+
+        const targetElementArea = targetElement.getBoundingClientRect();
+        const targetElementY = targetElementArea.top;
+        setToolbarCoordinateY(targetElementY);
+      } else {
+        setDisplayPropertyValue("none");
+      }
+    });
+    return () => {
+      document.removeEventListener("click", () => {});
+    };
+  }, []);
+
+  const [toolbarCoordinateY, setToolbarCoordinateY] = useState(350);
+  const [displayPropertyValue, setDisplayPropertyValue] = useState("none");
+
   return (
-    <div className={className}>
+    <div id="editor" className={className}>
       <Title innerText="Title" />
       <TextArea textComponent={<Paragraph innerText="샘플 텍스트입니다." />} />
       <TextArea
@@ -37,8 +62,10 @@ export default function Editor({ className }: EditorProps) {
       <TextArea textComponent={<Paragraph innerText="샘플 텍스트입니다." />} />
       <TextArea textComponent={<Paragraph innerText="샘플 텍스트입니다." />} />
       <TextArea textComponent={<Paragraph innerText="샘플 텍스트입니다." />} />
-      {/* Toolbar 테스트용 import */}
-      <Toolbar />
+      <Toolbar
+        coordinateY={toolbarCoordinateY}
+        displayPropertyValue={displayPropertyValue}
+      />
     </div>
   );
 }
