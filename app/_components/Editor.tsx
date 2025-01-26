@@ -17,8 +17,11 @@ interface EditorProps {
 export default function Editor({ className }: EditorProps) {
   useEffect(() => {
     document.addEventListener("click", (e: MouseEvent) => {
-      const y = e.clientY;
-      setToolbarCoordinateY(y);
+      const targetElement: HTMLElement = e.target as HTMLElement;
+      const targetElementArea = targetElement.getBoundingClientRect();
+
+      const targetElementY = targetElementArea.top;
+      setToolbarCoordinateY(targetElementY);
     });
     return () => {
       document.removeEventListener("click", () => {});

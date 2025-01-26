@@ -26,9 +26,9 @@ export default function Toolbar({ coordinateY: coordinateY }: ToolbarProps) {
   return (
     <div
       className={styles.toolbar}
-      // TODO: Remove hardcoded value in style
+      // TODO: Remove hardcoded value for plus in style
       style={{
-        top: `${coordinateY - 80}px`,
+        top: `${coordinateY - 50}px`,
       }}
     >
       {/* TODO: Replace a tag into next Link */}
