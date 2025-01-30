@@ -26,14 +26,7 @@ export default function Toolbar({
   displayPropertyValue: displayPropertyValue,
 }: ToolbarProps) {
   return (
-    <div
-      className="toolbar"
-      // TODO: Remove hardcoded value for plus in style
-      style={{
-        top: `${coordinateY - 50}px`,
-        display: displayPropertyValue,
-      }}
-    >
+    <div className="toolbar">
       {/* TODO: Replace a tag into next Link */}
       <a href="#">
         <div className="info">
@@ -82,11 +75,15 @@ export default function Toolbar({
       <FontAwesomeIcon icon={faEllipsis} className="horizontal-line" />
 
       <style jsx>{`
+         {
+          /* TODO: Remove hardcoded value for plus in style */
+        }
         .toolbar {
           position: absolute;
           z-index: 2;
+          top: ${coordinateY - 50}px;
           left: calc(50% - var(--toolbar-width) / 2);
-          display: flex;
+          display: ${displayPropertyValue};
           justify-content: space-between;
           align-items: center;
           height: 50px;
