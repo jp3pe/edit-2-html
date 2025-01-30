@@ -1,6 +1,5 @@
 import Image from "next/image";
 
-import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAngleDown,
@@ -16,7 +15,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import InsertFontIcon from "@/public/icons/font-color-icon.svg";
-import styles from "@/app/styles.module.css";
 
 interface ToolbarProps {
   coordinateY: number;
@@ -29,7 +27,7 @@ export default function Toolbar({
 }: ToolbarProps) {
   return (
     <div
-      className={styles.toolbar}
+      className="toolbar"
       // TODO: Remove hardcoded value for plus in style
       style={{
         top: `${coordinateY - 50}px`,
@@ -38,7 +36,7 @@ export default function Toolbar({
     >
       {/* TODO: Replace a tag into next Link */}
       <a href="#">
-        <div className={styles["toolbar-info"]}>
+        <div className="info">
           {/* TODO: 물음표 기호의 배경과 아이콘을 반전하는 방법 찾기 */}
           <FontAwesomeIcon
             icon={faCircleQuestion}
@@ -47,17 +45,12 @@ export default function Toolbar({
           <p>Info</p>
         </div>
       </a>
-      <div
-        className={classNames(
-          styles["toolbar-text"],
-          styles["horizontal-line"]
-        )}
-      >
+      <div className="text horizontal-line">
         <p>Text</p>
         <FontAwesomeIcon
           icon={faAngleDown}
           style={{ color: "var(--arrow-color)" }}
-          className={styles["down-arrow-margin"]}
+          className="down-arrow-margin"
         />
       </div>
       <FontAwesomeIcon icon={faBold} />
@@ -66,30 +59,93 @@ export default function Toolbar({
       <FontAwesomeIcon icon={faStrikethrough} />
       <FontAwesomeIcon icon={faCode} />
       <FontAwesomeIcon icon={faSquareRootVariable} />
-      <div className={styles["toolbar-link"]}>
+      <div className="link">
         <FontAwesomeIcon icon={faLink} />
         <FontAwesomeIcon
           icon={faAngleDown}
           style={{ color: "var(--arrow-color)" }}
-          className={styles["down-arrow-margin"]}
+          className="down-arrow-margin"
         />
       </div>
-      <div className={styles["toolbar-font-color"]}>
+      <div className="font-color">
         <Image
           src={InsertFontIcon}
           alt={"A icon surrounded with a square."}
-          className={styles["toolbar-font-color-icon"]}
+          className="font-color-icon"
         />
         <FontAwesomeIcon
           icon={faAngleDown}
           style={{ color: "var(--arrow-color)" }}
-          className={styles["down-arrow-margin"]}
+          className="down-arrow-margin"
         />
       </div>
-      <FontAwesomeIcon
-        icon={faEllipsis}
-        className={styles["horizontal-line"]}
-      />
+      <FontAwesomeIcon icon={faEllipsis} className="horizontal-line" />
+
+      <style jsx>{`
+        .toolbar {
+          position: absolute;
+          z-index: 2;
+          left: calc(50% - var(--toolbar-width) / 2);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          height: 50px;
+          width: var(--toolbar-width);
+          padding-left: 1rem;
+          padding-right: 0.5rem;
+          border: solid 1px var(--arrow-color);
+          border-radius: 10px;
+          font-size: 2rem;
+          background-color: white;
+        }
+
+        .toolbar > a {
+          display: flex;
+          height: 100%;
+        }
+
+        .info {
+          width: 78px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .info > p {
+          margin-left: 0.5rem;
+        }
+
+        .text {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .link {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .font-color {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .font-color-icon {
+          height: 40px;
+        }
+
+        .horizontal-line {
+          padding-left: 0.5rem;
+          border-left: 1px solid var(--arrow-color);
+        }
+
+        .down-arrow-margin {
+          margin-left: 0.5rem;
+        }
+      `}</style>
     </div>
   );
 }

@@ -1,9 +1,19 @@
-import styles from "@/app/styles.module.css";
-
 interface TitleProps {
   innerText: string;
 }
 
 export default function Title({ innerText }: TitleProps) {
-  return <h1 className={styles["components-title"]}>{innerText}</h1>;
+  return (
+    <h1>
+      {innerText}
+
+      <style jsx>{`
+        h1 {
+          margin-bottom: 30px;
+          font-size: 3rem;
+          font-weight: bold;
+        }
+      `}</style>
+    </h1>
+  );
 }

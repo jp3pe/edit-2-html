@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import StyledJsxRegistry from "@/app/registry";
+import "@/app/globals.css";
 
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
@@ -17,7 +18,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <StyledJsxRegistry>
+        <body>{children}</body>
+      </StyledJsxRegistry>
     </html>
   );
 }

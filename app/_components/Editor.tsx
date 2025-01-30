@@ -10,11 +10,7 @@ import Title from "./Title";
 import Toolbar from "./Toolbar";
 import Underline from "./Underline";
 
-interface EditorProps {
-  className: string;
-}
-
-export default function Editor({ className }: EditorProps) {
+export default function Editor() {
   useEffect(() => {
     document.addEventListener("click", (e: MouseEvent) => {
       const targetElement: HTMLElement = e.target as HTMLElement;
@@ -38,7 +34,7 @@ export default function Editor({ className }: EditorProps) {
   const [displayPropertyValue, setDisplayPropertyValue] = useState("none");
 
   return (
-    <div id="editor" className={className}>
+    <div id="editor">
       <Title innerText="Title" />
       <TextArea textComponent={<Paragraph innerText="샘플 텍스트입니다." />} />
       <TextArea
@@ -66,6 +62,13 @@ export default function Editor({ className }: EditorProps) {
         coordinateY={toolbarCoordinateY}
         displayPropertyValue={displayPropertyValue}
       />
+
+      <style jsx>{`
+        div {
+          max-width: 100%;
+          overflow-wrap: break-word;
+        }
+      `}</style>
     </div>
   );
 }
