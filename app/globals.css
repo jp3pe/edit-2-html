@@ -5,7 +5,7 @@
 :root {
   --background: white;
   --foreground: black;
-  --vertical-padding: 10%;
+  --vertical-padding: 20%;
   --arrow-color: #b4b3b1;
   --toolbar-width: 810px;
 }

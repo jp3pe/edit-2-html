@@ -14,6 +14,10 @@ export default function TextArea({ textComponent }: TextAreaProps) {
           margin-top: 0.3rem;
           margin-bottom: 0.3rem;
         }
+
+        div:hover {
+          cursor: text;
+        }
       `}</style>
     </div>
   );

@@ -58,6 +58,7 @@ export default function Editor() {
       <TextArea textComponent={<Paragraph innerText="샘플 텍스트입니다." />} />
       <TextArea textComponent={<Paragraph innerText="샘플 텍스트입니다." />} />
       <TextArea textComponent={<Paragraph innerText="샘플 텍스트입니다." />} />
+      <TextArea textComponent={<Paragraph />} />
       <Toolbar
         coordinateY={toolbarCoordinateY}
         displayPropertyValue={displayPropertyValue}
@@ -65,7 +66,7 @@ export default function Editor() {
 
       <style jsx>{`
         div {
-          max-width: 100%;
+          width: 100%;
           overflow-wrap: break-word;
         }
       `}</style>

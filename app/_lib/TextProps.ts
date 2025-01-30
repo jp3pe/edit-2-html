@@ -1,3 +1,3 @@
 interface TextProps {
-  innerText: string;
+  innerText?: string;
 }
