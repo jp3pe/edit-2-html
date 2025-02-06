@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Bold from "./Bold";
-import Italic from "./Italic";
-import Paragraph from "./Paragraph";
-import Strikethrough from "./Strikethrough";
-import TextArea from "./TextArea";
-import Title from "./Title";
 import Toolbar from "./Toolbar";
-import Underline from "./Underline";
+// import Bold from "./Bold";
+// import Italic from "./Italic";
+// import Paragraph from "./Paragraph";
+// import Strikethrough from "./Strikethrough";
+// import TextArea from "./TextArea";
+// import Title from "./Title";
+// import Underline from "./Underline";
 
 export default function Editor() {
   useEffect(() => {
@@ -35,7 +35,11 @@ export default function Editor() {
 
   return (
     <div id="editor">
-      <Title innerText="Title" />
+      <Toolbar
+        coordinateY={toolbarCoordinateY}
+        displayPropertyValue={displayPropertyValue}
+      />
+      {/* <Title innerText="Title" />
       <TextArea textComponent={<Paragraph innerText="샘플 텍스트입니다." />} />
       <TextArea
         textComponent={<Bold innerText="굵게 적용된 샘플 텍스트입니다." />}
@@ -58,11 +62,7 @@ export default function Editor() {
       <TextArea textComponent={<Paragraph innerText="샘플 텍스트입니다." />} />
       <TextArea textComponent={<Paragraph innerText="샘플 텍스트입니다." />} />
       <TextArea textComponent={<Paragraph innerText="샘플 텍스트입니다." />} />
-      <TextArea textComponent={<Paragraph />} />
-      <Toolbar
-        coordinateY={toolbarCoordinateY}
-        displayPropertyValue={displayPropertyValue}
-      />
+      <TextArea textComponent={<Paragraph />} /> */}
 
       <style jsx>{`
         div {
