@@ -2,15 +2,18 @@
 
 import { useEffect, useState } from "react";
 import Toolbar from "./Toolbar";
-// import Bold from "./Bold";
-// import Italic from "./Italic";
-// import Paragraph from "./Paragraph";
-// import Strikethrough from "./Strikethrough";
-// import TextArea from "./TextArea";
-// import Title from "./Title";
-// import Underline from "./Underline";
+import Title from "./Title";
+import {
+  contentData,
+  titleData,
+  EditableDynamicComponent,
+} from "../_mock/editorData";
+import EditorContent from "./EditorContent";
 
 export default function Editor() {
+  const [toolbarCoordinateY, setToolbarCoordinateY] = useState(350);
+  const [displayPropertyValue, setDisplayPropertyValue] = useState("none");
+
   useEffect(() => {
     document.addEventListener("click", (e: MouseEvent) => {
       const targetElement: HTMLElement = e.target as HTMLElement;
@@ -30,8 +33,7 @@ export default function Editor() {
     };
   }, []);
 
-  const [toolbarCoordinateY, setToolbarCoordinateY] = useState(350);
-  const [displayPropertyValue, setDisplayPropertyValue] = useState("none");
+  const titleInnerText = titleData.innerText;
 
   return (
     <div id="editor">
@@ -39,30 +41,8 @@ export default function Editor() {
         coordinateY={toolbarCoordinateY}
         displayPropertyValue={displayPropertyValue}
       />
-      {/* <Title innerText="Title" />
-      <TextArea textComponent={<Paragraph innerText="샘플 텍스트입니다." />} />
-      <TextArea
-        textComponent={<Bold innerText="굵게 적용된 샘플 텍스트입니다." />}
-      />
-      <TextArea
-        textComponent={
-          <Underline innerText="밑줄이 적용된 샘플 텍스트입니다." />
-        }
-      />
-      <TextArea
-        textComponent={
-          <Strikethrough innerText="취소선이 적용된 샘플 텍스트입니다." />
-        }
-      />
-      <TextArea
-        textComponent={
-          <Italic innerText="기울림이 적용된 샘플 텍스트입니다." />
-        }
-      />
-      <TextArea textComponent={<Paragraph innerText="샘플 텍스트입니다." />} />
-      <TextArea textComponent={<Paragraph innerText="샘플 텍스트입니다." />} />
-      <TextArea textComponent={<Paragraph innerText="샘플 텍스트입니다." />} />
-      <TextArea textComponent={<Paragraph />} /> */}
+      <Title innerText={titleInnerText} />
+      <EditorContent contentData={contentData as EditableDynamicComponent[]} />
 
       <style jsx>{`
         div {
