@@ -1,4 +1,3 @@
-import { EditableDynamicComponent } from "../_mock/editorData";
 import {
   Bold,
   Italic,
@@ -6,7 +5,8 @@ import {
   Strikethrough,
   Underline,
 } from "@/app/_components/CustomComponents";
-import TextArea from "./TextArea";
+import { EditableDynamicComponent } from "@/app/types/editable-dynamic-component";
+import TextArea from "@/app/_components/TextArea";
 
 const ComponentMap: Record<string, React.ElementType> = {
   Bold,

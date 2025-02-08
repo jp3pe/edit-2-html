@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Toolbar from "./Toolbar";
-import Title from "./Title";
-import {
-  contentData,
-  titleData,
-  EditableDynamicComponent,
-} from "../_mock/editorData";
-import EditorContent from "./EditorContent";
+
+import { contentData, titleData } from "@/app/_mock/editorData";
+import { EditableDynamicComponent } from "@/app/types/editable-dynamic-component";
+
+import Toolbar from "@/app/_components/Toolbar";
+import Title from "@/app/_components/Title";
+import EditorContent from "@/app/_components/EditorContent";
 
 export default function Editor() {
   const [toolbarCoordinateY, setToolbarCoordinateY] = useState(350);

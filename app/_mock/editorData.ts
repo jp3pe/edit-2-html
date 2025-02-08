@@ -1,33 +1,3 @@
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace JSX {
-    interface IntrinsicElements {
-      Bold: {
-        id: string;
-        innerText?: string;
-      };
-      Italic: {
-        id: string;
-        innerText?: string;
-      };
-      Paragraph: {
-        id: string;
-        innerText?: string;
-      };
-      Strikethrough: {
-        id: string;
-        innerText?: string;
-      };
-    }
-  }
-}
-
-export interface EditableDynamicComponent {
-  id: number;
-  componentName: keyof JSX.IntrinsicElements;
-  innerText?: string;
-}
-
 export const titleData = {
   id: 1,
   componentName: "Title",
