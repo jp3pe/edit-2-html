@@ -6,6 +6,7 @@ import {
   Strikethrough,
   Underline,
 } from "@/app/_components/CustomComponents";
+import TextArea from "./TextArea";
 
 const ComponentMap: Record<string, React.ElementType> = {
   Bold,
@@ -22,14 +23,14 @@ interface EditorContentProps {
 export default function EditorContent({ contentData }: EditorContentProps) {
   return (
     <div>
-      {contentData.map(({ componentName, ...others }) => {
+      {contentData.map(({ id, componentName, ...others }) => {
         const Cmp = ComponentMap[componentName];
 
         return (
-          // TODO: Change div into using TextArea component?
-          <div key={`title-${others.id}`}>
-            <Cmp key={`title-${others.id}`} {...others} />
-          </div>
+          <TextArea
+            key={`textarea-${id}`}
+            textComponent={<Cmp key={`title-${id}`} {...others} />}
+          />
         );
       })}
     </div>

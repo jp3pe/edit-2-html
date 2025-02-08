@@ -1,6 +1,7 @@
 import { JSX, ReactElement } from "react";
 
 interface TextAreaProps {
+  key: string;
   textComponent: ReactElement<JSX.Element>;
 }
 
