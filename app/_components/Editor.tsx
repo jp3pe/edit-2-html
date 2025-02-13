@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { contentData, titleData } from "@/app/_mock/editorData";
+import { contentData, titleData } from "@/app/_mock/editor-data";
 import { EditableDynamicComponent } from "@/app/types/editable-dynamic-component";
 
 import Toolbar from "@/app/_components/Toolbar";
