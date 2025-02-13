@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import {
   Bold,
   Italic,
@@ -20,7 +22,36 @@ interface EditorContentProps {
   contentData: EditableDynamicComponent[];
 }
 
-export default function EditorContent({ contentData }: EditorContentProps) {
+export default function EditorContent({
+  contentData: contentDataInput,
+}: EditorContentProps) {
+  const [contentData, setContentDataChange] = useState(contentDataInput);
+
+  useEffect(() => {
+    document.addEventListener("keydown", (e: KeyboardEvent) => {
+      if (e.key === "Enter") {
+        const contentDataFinalItem = contentData.at(-1);
+        const nextId: number = contentDataFinalItem
+          ? contentDataFinalItem.id + 1
+          : 1;
+
+        const newComponentData: EditableDynamicComponent = {
+          id: nextId,
+          componentName: "Paragraph",
+          innerText: "Insert new sentence.",
+        };
+
+        const tempContentData = contentData.slice();
+        tempContentData.push(newComponentData);
+
+        setContentDataChange(tempContentData);
+      }
+    });
+    return () => {
+      document.removeEventListener("keydown", () => {});
+    };
+  });
+
   return (
     <div>
       {contentData.map(({ id, componentName, ...others }) => {
