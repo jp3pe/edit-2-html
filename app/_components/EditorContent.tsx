@@ -28,7 +28,7 @@ export default function EditorContent({
   const [contentData, setContentDataChange] = useState(contentDataInput);
 
   useEffect(() => {
-    document.addEventListener("keydown", (e: KeyboardEvent) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Enter") {
         const contentDataFinalItem = contentData.at(-1);
         const nextId: number = contentDataFinalItem
@@ -46,11 +46,13 @@ export default function EditorContent({
 
         setContentDataChange(tempContentData);
       }
-    });
-    return () => {
-      document.removeEventListener("keydown", () => {});
     };
-  });
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [contentData]);
 
   return (
     <div>
@@ -60,7 +62,7 @@ export default function EditorContent({
         return (
           <TextArea
             key={`textarea-${id}`}
-            textComponent={<Cmp key={`title-${id}`} {...others} />}
+            textComponent={<Cmp {...others} />}
           />
         );
       })}
