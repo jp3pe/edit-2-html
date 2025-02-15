@@ -22,8 +22,8 @@ interface ToolbarProps {
 }
 
 export default function Toolbar({
-  coordinateY: coordinateY,
-  displayPropertyValue: displayPropertyValue,
+  coordinateY,
+  displayPropertyValue,
 }: ToolbarProps) {
   return (
     <div className="toolbar">
