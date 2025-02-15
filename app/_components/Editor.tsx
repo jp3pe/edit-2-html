@@ -14,7 +14,7 @@ export default function Editor() {
   const [displayPropertyValue, setDisplayPropertyValue] = useState("none");
 
   useEffect(() => {
-    document.addEventListener("click", (e: MouseEvent) => {
+    function handleMouseOn(e: MouseEvent) {
       const targetElement: HTMLElement = e.target as HTMLElement;
 
       if (targetElement.closest("#editor")) {
@@ -26,9 +26,11 @@ export default function Editor() {
       } else {
         setDisplayPropertyValue("none");
       }
-    });
+    }
+
+    document.addEventListener("click", handleMouseOn);
     return () => {
-      document.removeEventListener("click", () => {});
+      document.removeEventListener("click", handleMouseOn);
     };
   }, []);
 

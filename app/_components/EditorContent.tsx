@@ -28,7 +28,7 @@ export default function EditorContent({
   const [contentData, setContentDataChange] = useState(contentDataInput);
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    function handleKeyDown(e: KeyboardEvent) {
       if (e.key === "Enter") {
         const contentDataFinalItem = contentData.at(-1);
         const nextId: number = contentDataFinalItem
@@ -46,7 +46,7 @@ export default function EditorContent({
 
         setContentDataChange(tempContentData);
       }
-    };
+    }
 
     document.addEventListener("keydown", handleKeyDown);
     return () => {
