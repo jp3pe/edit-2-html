@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import {
   Bold,
@@ -25,10 +25,10 @@ interface EditorContentProps {
 export default function EditorContent({
   contentData: contentDataInput,
 }: EditorContentProps) {
-  const [contentData, setContentDataChange] = useState(contentDataInput);
+  const [contentData, setContentData] = useState(contentDataInput);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
       if (e.key === "Enter") {
         const contentDataFinalItem = contentData.at(-1);
         const nextId: number = contentDataFinalItem
@@ -41,18 +41,19 @@ export default function EditorContent({
           innerText: "Insert new sentence.",
         };
 
-        const tempContentData = contentData.slice();
-        tempContentData.push(newComponentData);
-
-        setContentDataChange(tempContentData);
+        const tempContentData = [...contentData, newComponentData];
+        setContentData(tempContentData);
       }
-    };
+    },
+    [contentData]
+  );
 
+  useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [contentData]);
+  }, [handleKeyDown]);
 
   return (
     <div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { contentData, titleData } from "@/app/_mock/editor-data";
 import { EditableDynamicComponent } from "@/app/types/editable-dynamic-component";
@@ -13,24 +13,26 @@ export default function Editor() {
   const [toolbarCoordinateY, setToolbarCoordinateY] = useState(350);
   const [displayPropertyValue, setDisplayPropertyValue] = useState("none");
 
-  useEffect(() => {
-    document.addEventListener("click", (e: MouseEvent) => {
-      const targetElement: HTMLElement = e.target as HTMLElement;
+  const handleMouseOn = useCallback((e: MouseEvent) => {
+    const targetElement: HTMLElement = e.target as HTMLElement;
 
-      if (targetElement.closest("#editor")) {
-        setDisplayPropertyValue("flex");
+    if (targetElement.closest("#editor")) {
+      setDisplayPropertyValue("flex");
 
-        const targetElementArea = targetElement.getBoundingClientRect();
-        const targetElementY = targetElementArea.top;
-        setToolbarCoordinateY(targetElementY);
-      } else {
-        setDisplayPropertyValue("none");
-      }
-    });
-    return () => {
-      document.removeEventListener("click", () => {});
-    };
+      const targetElementArea = targetElement.getBoundingClientRect();
+      const targetElementY = targetElementArea.top;
+      setToolbarCoordinateY(targetElementY);
+    } else {
+      setDisplayPropertyValue("none");
+    }
   }, []);
+
+  useEffect(() => {
+    document.addEventListener("click", handleMouseOn);
+    return () => {
+      document.removeEventListener("click", handleMouseOn);
+    };
+  }, [handleMouseOn]);
 
   const titleInnerText = titleData.innerText;
 
