@@ -27,7 +27,7 @@ export default function EditorContent({
 }: EditorContentProps) {
   const [contentData, setContentData] = useState(contentDataInput);
 
-  const handleKeyDown = useCallback(
+  const handleEnterKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Enter") {
         const contentDataFinalItem = contentData.at(-1);
@@ -49,11 +49,42 @@ export default function EditorContent({
   );
 
   useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keydown", handleEnterKeyDown);
     return () => {
-      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keydown", handleEnterKeyDown);
     };
-  }, [handleKeyDown]);
+  }, [handleEnterKeyDown]);
+
+  const handleBackspaceKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === "Backspace") {
+        const targetElement: HTMLElement = e.target as HTMLElement;
+        // TODO: Fix this error?
+        const targetParentElement: HTMLElement = targetElement.parentElement;
+
+        if (targetElement.innerText === "\n") {
+          const indexToDelete = contentData.findIndex(
+            // TODO: Delete this hardcoded string
+            (contentDatum) =>
+              `textarea-${contentDatum.id}` === targetParentElement.id
+          );
+          const tempContentData = [...contentData];
+          tempContentData.splice(indexToDelete, 1);
+
+          setContentData(tempContentData);
+
+          // TODO: Turn off the toolbar
+        }
+      }
+    },
+    [contentData]
+  );
+  useEffect(() => {
+    document.addEventListener("keydown", handleBackspaceKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleBackspaceKeyDown);
+    };
+  }, [handleBackspaceKeyDown]);
 
   return (
     <div>
@@ -62,6 +93,7 @@ export default function EditorContent({
 
         return (
           <TextArea
+            id={id}
             key={`textarea-${id}`}
             textComponent={<Cmp {...others} />}
           />
