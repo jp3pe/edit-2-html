@@ -18,6 +18,8 @@ const ComponentMap: Record<string, React.ElementType> = {
   Underline,
 };
 
+const TEXTAREA_PREFIX = "textarea-";
+
 interface EditorContentProps {
   contentData: EditableDynamicComponent[];
 }
@@ -27,78 +29,73 @@ export default function EditorContent({
 }: EditorContentProps) {
   const [contentData, setContentData] = useState(contentDataInput);
 
-  const handleEnterKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      if (e.key === "Enter") {
-        const contentDataFinalItem = contentData.at(-1);
-        const nextId: number = contentDataFinalItem
-          ? contentDataFinalItem.id + 1
-          : 1;
+  const handleEnterKeyDown = useCallback(() => {
+    const contentDataFinalItem = contentData.at(-1);
+    const nextId: number = contentDataFinalItem
+      ? contentDataFinalItem.id + 1
+      : 1;
 
-        const newComponentData: EditableDynamicComponent = {
-          id: nextId,
-          componentName: "Paragraph",
-          innerText: "Insert new sentence.",
-        };
-
-        const tempContentData = [...contentData, newComponentData];
-        setContentData(tempContentData);
-      }
-    },
-    [contentData]
-  );
-
-  useEffect(() => {
-    document.addEventListener("keydown", handleEnterKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleEnterKeyDown);
+    const newComponentData: EditableDynamicComponent = {
+      id: nextId,
+      componentName: "Paragraph",
+      innerText: "Insert new sentence.",
     };
-  }, [handleEnterKeyDown]);
+
+    const tempContentData = [...contentData, newComponentData];
+    setContentData(tempContentData);
+  }, [contentData]);
 
   const handleBackspaceKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === "Backspace") {
-        const targetElement: HTMLElement = e.target as HTMLElement;
-        // TODO: Fix this error?
-        const targetParentElement: HTMLElement = targetElement.parentElement;
+      const targetElement: HTMLElement = e.target as HTMLElement;
+      const targetParentElement: HTMLElement | null =
+        targetElement.parentElement;
 
-        if (targetElement.innerText === "\n") {
-          const indexToDelete = contentData.findIndex(
-            // TODO: Delete this hardcoded string
-            (contentDatum) =>
-              `textarea-${contentDatum.id}` === targetParentElement.id
-          );
-          const tempContentData = [...contentData];
-          tempContentData.splice(indexToDelete, 1);
+      if (targetParentElement !== null && targetElement.innerText === "\n") {
+        const indexToDelete = contentData.findIndex(
+          (contentDatum) =>
+            `${TEXTAREA_PREFIX}${contentDatum.id}` === targetParentElement.id
+        );
+        const tempContentData = [...contentData];
+        tempContentData.splice(indexToDelete, 1);
 
-          setContentData(tempContentData);
-
-          // TODO: Turn off the toolbar
-        }
+        setContentData(tempContentData);
+        // TODO: Turn off the toolbar
       }
     },
     [contentData]
   );
+
   useEffect(() => {
-    document.addEventListener("keydown", handleBackspaceKeyDown);
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Enter") {
+        handleEnterKeyDown();
+      } else if (e.key === "Backspace") {
+        handleBackspaceKeyDown(e);
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
-      document.removeEventListener("keydown", handleBackspaceKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [handleBackspaceKeyDown]);
+  }, [handleEnterKeyDown, handleBackspaceKeyDown]);
 
-  return (
-    <div>
-      {contentData.map(({ id, componentName, ...others }) => {
-        const Cmp = ComponentMap[componentName];
+  function renderTextAreas({
+    id,
+    componentName,
+    ...others
+  }: EditableDynamicComponent) {
+    const Cmp = ComponentMap[componentName];
 
-        return (
-          <TextArea
-            id={id}
-            key={`textarea-${id}`}
-            textComponent={<Cmp {...others} />}
-          />
-        );
-      })}
-    </div>
-  );
+    return (
+      <TextArea
+        id={`${TEXTAREA_PREFIX}${id}`}
+        key={`${TEXTAREA_PREFIX}${id}`}
+        textComponent={<Cmp {...others} />}
+      />
+    );
+  }
+
+  return <div>{contentData.map(renderTextAreas)}</div>;
 }
