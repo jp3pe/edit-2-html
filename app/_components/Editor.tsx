@@ -11,19 +11,20 @@ import EditorContent from "@/app/_components/EditorContent";
 
 export default function Editor() {
   const [toolbarCoordinateY, setToolbarCoordinateY] = useState(350);
-  const [displayPropertyValue, setDisplayPropertyValue] = useState("none");
+  const [toolbarDisplayPropertyValue, setToolbarDisplayPropertyValue] =
+    useState("none");
 
   const handleMouseOn = useCallback((e: MouseEvent) => {
     const targetElement: HTMLElement = e.target as HTMLElement;
 
     if (targetElement.closest("#editor")) {
-      setDisplayPropertyValue("flex");
+      setToolbarDisplayPropertyValue("flex");
 
       const targetElementArea = targetElement.getBoundingClientRect();
       const targetElementY = targetElementArea.top;
       setToolbarCoordinateY(targetElementY);
     } else {
-      setDisplayPropertyValue("none");
+      setToolbarDisplayPropertyValue("none");
     }
   }, []);
 
@@ -40,10 +41,13 @@ export default function Editor() {
     <div id="editor">
       <Toolbar
         coordinateY={toolbarCoordinateY}
-        displayPropertyValue={displayPropertyValue}
+        displayPropertyValue={toolbarDisplayPropertyValue}
       />
       <Title innerText={titleInnerText} />
-      <EditorContent contentData={contentData as EditableDynamicComponent[]} />
+      <EditorContent
+        setToolbarDisplayPropertyValue={setToolbarDisplayPropertyValue}
+        contentData={contentData as EditableDynamicComponent[]}
+      />
 
       <style jsx>{`
         div {

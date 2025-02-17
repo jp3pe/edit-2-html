@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 
 import {
   Bold,
@@ -21,10 +27,12 @@ const ComponentMap: Record<string, React.ElementType> = {
 const TEXTAREA_PREFIX = "textarea-";
 
 interface EditorContentProps {
+  setToolbarDisplayPropertyValue: Dispatch<SetStateAction<string>>;
   contentData: EditableDynamicComponent[];
 }
 
 export default function EditorContent({
+  setToolbarDisplayPropertyValue,
   contentData: contentDataInput,
 }: EditorContentProps) {
   const [contentData, setContentData] = useState(contentDataInput);
@@ -60,10 +68,10 @@ export default function EditorContent({
         tempContentData.splice(indexToDelete, 1);
 
         setContentData(tempContentData);
-        // TODO: Turn off the toolbar
+        setToolbarDisplayPropertyValue("none");
       }
     },
-    [contentData]
+    [contentData, setToolbarDisplayPropertyValue]
   );
 
   useEffect(() => {
