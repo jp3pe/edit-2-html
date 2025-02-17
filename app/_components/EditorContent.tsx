@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 
 import {
   Bold,
@@ -18,55 +24,86 @@ const ComponentMap: Record<string, React.ElementType> = {
   Underline,
 };
 
+const TEXTAREA_PREFIX = "textarea-";
+
 interface EditorContentProps {
+  setToolbarDisplayPropertyValue: Dispatch<SetStateAction<string>>;
   contentData: EditableDynamicComponent[];
 }
 
 export default function EditorContent({
+  setToolbarDisplayPropertyValue,
   contentData: contentDataInput,
 }: EditorContentProps) {
   const [contentData, setContentData] = useState(contentDataInput);
 
-  const handleKeyDown = useCallback(
+  const handleEnterKeyDown = useCallback(() => {
+    const contentDataFinalItem = contentData.at(-1);
+    const nextId: number = contentDataFinalItem
+      ? contentDataFinalItem.id + 1
+      : 1;
+
+    const newComponentData: EditableDynamicComponent = {
+      id: nextId,
+      componentName: "Paragraph",
+      innerText: "Insert new sentence.",
+    };
+
+    const tempContentData = [...contentData, newComponentData];
+    setContentData(tempContentData);
+  }, [contentData]);
+
+  const handleBackspaceKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === "Enter") {
-        const contentDataFinalItem = contentData.at(-1);
-        const nextId: number = contentDataFinalItem
-          ? contentDataFinalItem.id + 1
-          : 1;
+      const targetElement: HTMLElement = e.target as HTMLElement;
+      const targetParentElement: HTMLElement | null =
+        targetElement.parentElement;
 
-        const newComponentData: EditableDynamicComponent = {
-          id: nextId,
-          componentName: "Paragraph",
-          innerText: "Insert new sentence.",
-        };
+      if (targetParentElement !== null && targetElement.innerText === "\n") {
+        const indexToDelete = contentData.findIndex(
+          (contentDatum) =>
+            `${TEXTAREA_PREFIX}${contentDatum.id}` === targetParentElement.id
+        );
+        const tempContentData = [...contentData];
+        tempContentData.splice(indexToDelete, 1);
 
-        const tempContentData = [...contentData, newComponentData];
         setContentData(tempContentData);
+        setToolbarDisplayPropertyValue("none");
       }
     },
-    [contentData]
+    [contentData, setToolbarDisplayPropertyValue]
   );
 
   useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Enter") {
+        handleEnterKeyDown();
+      } else if (e.key === "Backspace") {
+        handleBackspaceKeyDown(e);
+      }
+    }
+
     document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [handleKeyDown]);
+  }, [handleEnterKeyDown, handleBackspaceKeyDown]);
 
-  return (
-    <div>
-      {contentData.map(({ id, componentName, ...others }) => {
-        const Cmp = ComponentMap[componentName];
+  function renderTextAreas({
+    id,
+    componentName,
+    ...others
+  }: EditableDynamicComponent) {
+    const Cmp = ComponentMap[componentName];
 
-        return (
-          <TextArea
-            key={`textarea-${id}`}
-            textComponent={<Cmp {...others} />}
-          />
-        );
-      })}
-    </div>
-  );
+    return (
+      <TextArea
+        id={`${TEXTAREA_PREFIX}${id}`}
+        key={`${TEXTAREA_PREFIX}${id}`}
+        textComponent={<Cmp {...others} />}
+      />
+    );
+  }
+
+  return <div>{contentData.map(renderTextAreas)}</div>;
 }
