@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import React from "react";
 
-import { EditorState } from "lexical";
+import { $createTextNode, $getRoot } from "lexical";
+import { $createHeadingNode, HeadingNode } from "@lexical/rich-text";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
@@ -21,23 +22,18 @@ function onError(error: Error) {
   console.error(error);
 }
 
-function MyOnChangePlugin({
-  onChange,
-}: {
-  onChange: (editorState: EditorState) => void;
-}): null {
-  // Access the editor through the LexicalComposerContext
+function MyHeadingPlugin() {
   const [editor] = useLexicalComposerContext();
-  // Wrap our listener in useEffect to handle the teardown and avoid stale references.
-  useEffect(() => {
-    // most listeners return a teardown function that can be called to clean them up.
-    return editor.registerUpdateListener(({ editorState }) => {
-      // call onChange here to pass the latest state up to the parent.
-      onChange(editorState);
+  const onClick = (e: React.MouseEvent): void => {
+    editor.update(() => {
+      const root = $getRoot();
+      root.append(
+        $createHeadingNode("h1").append($createTextNode("Hello world"))
+      );
     });
-  }, [editor, onChange]);
+  };
 
-  return null;
+  return <button onClick={onClick}>Heading</button>;
 }
 
 export default function EditorContent() {
@@ -45,10 +41,12 @@ export default function EditorContent() {
     namespace: "MyEditor",
     theme,
     onError,
+    nodes: [HeadingNode],
   };
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
+      <MyHeadingPlugin />
       <RichTextPlugin
         contentEditable={
           <ContentEditable
@@ -59,12 +57,6 @@ export default function EditorContent() {
         ErrorBoundary={LexicalErrorBoundary}
       />
       <HistoryPlugin />
-      <MyOnChangePlugin
-        onChange={(editorState: EditorState) => {
-          console.log(editorState);
-        }}
-      />
-      {/* <AutoFocusPlugin /> */}
     </LexicalComposer>
   );
 }
