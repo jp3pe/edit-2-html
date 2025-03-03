@@ -1,11 +1,6 @@
 import React from "react";
 
-import {
-  $createTextNode,
-  $getRoot,
-  $getSelection,
-  $isRangeSelection,
-} from "lexical";
+import { $getSelection, $isRangeSelection } from "lexical";
 import { $createHeadingNode, HeadingNode } from "@lexical/rich-text";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
@@ -16,9 +11,16 @@ import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { $setBlocksType } from "@lexical/selection";
 
+// import styles from "./lexical.module.css";
+
+import "./styles.css";
+
 const theme = {
-  // Theme styling goes here
-  //...
+  heading: {
+    h1: "editor-h1",
+    h2: "editor-h2",
+    h3: "editor-h3",
+  },
 };
 
 // Catch any errors that occur during Lexical updates and log them

@@ -39,10 +39,10 @@ export default function Editor() {
 
   return (
     <div id="editor">
-      <Toolbar
+      {/* <Toolbar
         coordinateY={toolbarCoordinateY}
         displayPropertyValue={toolbarDisplayPropertyValue}
-      />
+      /> */}
       <Title innerText={titleInnerText} />
       <EditorContent
         // setToolbarDisplayPropertyValue={setToolbarDisplayPropertyValue}
