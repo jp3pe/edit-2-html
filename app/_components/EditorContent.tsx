@@ -1,109 +1,70 @@
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import { useEffect } from "react";
 
-import {
-  Bold,
-  Italic,
-  Paragraph,
-  Strikethrough,
-  Underline,
-} from "@/app/_components/CustomComponents";
-import { EditableDynamicComponent } from "@/app/types/editable-dynamic-component";
-import TextArea from "@/app/_components/TextArea";
+import { EditorState } from "lexical";
+import { LexicalComposer } from "@lexical/react/LexicalComposer";
+import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
+import { ContentEditable } from "@lexical/react/LexicalContentEditable";
+import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
+import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
 
-const ComponentMap: Record<string, React.ElementType> = {
-  Bold,
-  Italic,
-  Paragraph,
-  Strikethrough,
-  Underline,
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+
+const theme = {
+  // Theme styling goes here
+  //...
 };
 
-const TEXTAREA_PREFIX = "textarea-";
-
-interface EditorContentProps {
-  setToolbarDisplayPropertyValue: Dispatch<SetStateAction<string>>;
-  contentData: EditableDynamicComponent[];
+// Catch any errors that occur during Lexical updates and log them
+// or throw them as needed. If you don't throw them, Lexical will
+// try to recover gracefully without losing user data.
+function onError(error: Error) {
+  console.error(error);
 }
 
-export default function EditorContent({
-  setToolbarDisplayPropertyValue,
-  contentData: contentDataInput,
-}: EditorContentProps) {
-  const [contentData, setContentData] = useState(contentDataInput);
-
-  const handleEnterKeyDown = useCallback(() => {
-    const contentDataFinalItem = contentData.at(-1);
-    const nextId: number = contentDataFinalItem
-      ? contentDataFinalItem.id + 1
-      : 1;
-
-    const newComponentData: EditableDynamicComponent = {
-      id: nextId,
-      componentName: "Paragraph",
-      innerText: "Insert new sentence.",
-    };
-
-    const tempContentData = [...contentData, newComponentData];
-    setContentData(tempContentData);
-  }, [contentData]);
-
-  const handleBackspaceKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      const targetElement: HTMLElement = e.target as HTMLElement;
-      const targetParentElement: HTMLElement | null =
-        targetElement.parentElement;
-
-      if (targetParentElement !== null && targetElement.innerText === "\n") {
-        const indexToDelete = contentData.findIndex(
-          (contentDatum) =>
-            `${TEXTAREA_PREFIX}${contentDatum.id}` === targetParentElement.id
-        );
-        const tempContentData = [...contentData];
-        tempContentData.splice(indexToDelete, 1);
-
-        setContentData(tempContentData);
-        setToolbarDisplayPropertyValue("none");
-      }
-    },
-    [contentData, setToolbarDisplayPropertyValue]
-  );
-
+function MyOnChangePlugin({
+  onChange,
+}: {
+  onChange: (editorState: EditorState) => void;
+}): null {
+  // Access the editor through the LexicalComposerContext
+  const [editor] = useLexicalComposerContext();
+  // Wrap our listener in useEffect to handle the teardown and avoid stale references.
   useEffect(() => {
-    function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === "Enter") {
-        handleEnterKeyDown();
-      } else if (e.key === "Backspace") {
-        handleBackspaceKeyDown(e);
-      }
-    }
+    // most listeners return a teardown function that can be called to clean them up.
+    return editor.registerUpdateListener(({ editorState }) => {
+      // call onChange here to pass the latest state up to the parent.
+      onChange(editorState);
+    });
+  }, [editor, onChange]);
 
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [handleEnterKeyDown, handleBackspaceKeyDown]);
+  return null;
+}
 
-  function renderTextAreas({
-    id,
-    componentName,
-    ...others
-  }: EditableDynamicComponent) {
-    const Cmp = ComponentMap[componentName];
+export default function EditorContent() {
+  const initialConfig = {
+    namespace: "MyEditor",
+    theme,
+    onError,
+  };
 
-    return (
-      <TextArea
-        id={`${TEXTAREA_PREFIX}${id}`}
-        key={`${TEXTAREA_PREFIX}${id}`}
-        textComponent={<Cmp {...others} />}
+  return (
+    <LexicalComposer initialConfig={initialConfig}>
+      <RichTextPlugin
+        contentEditable={
+          <ContentEditable
+            aria-placeholder={"Enter some text..."}
+            placeholder={<div>Enter some text...</div>}
+          />
+        }
+        ErrorBoundary={LexicalErrorBoundary}
       />
-    );
-  }
-
-  return <div>{contentData.map(renderTextAreas)}</div>;
+      <HistoryPlugin />
+      <MyOnChangePlugin
+        onChange={(editorState: EditorState) => {
+          console.log(editorState);
+        }}
+      />
+      {/* <AutoFocusPlugin /> */}
+    </LexicalComposer>
+  );
 }

@@ -45,8 +45,8 @@ export default function Editor() {
       />
       <Title innerText={titleInnerText} />
       <EditorContent
-        setToolbarDisplayPropertyValue={setToolbarDisplayPropertyValue}
-        contentData={contentData as EditableDynamicComponent[]}
+        // setToolbarDisplayPropertyValue={setToolbarDisplayPropertyValue}
+        // contentData={contentData as EditableDynamicComponent[]}
       />
 
       <style jsx>{`
