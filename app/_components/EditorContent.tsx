@@ -1,6 +1,11 @@
 import React from "react";
 
-import { $createTextNode, $getRoot } from "lexical";
+import {
+  $createTextNode,
+  $getRoot,
+  $getSelection,
+  $isRangeSelection,
+} from "lexical";
 import { $createHeadingNode, HeadingNode } from "@lexical/rich-text";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
@@ -9,6 +14,7 @@ import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
 
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { $setBlocksType } from "@lexical/selection";
 
 const theme = {
   // Theme styling goes here
@@ -22,18 +28,31 @@ function onError(error: Error) {
   console.error(error);
 }
 
-function MyHeadingPlugin() {
+function HeadingPlugin() {
   const [editor] = useLexicalComposerContext();
-  const onClick = (e: React.MouseEvent): void => {
+  const onClick = (tag: "h1" | "h2" | "h3"): void => {
     editor.update(() => {
-      const root = $getRoot();
-      root.append(
-        $createHeadingNode("h1").append($createTextNode("Hello world"))
-      );
+      const selection = $getSelection();
+      if ($isRangeSelection(selection)) {
+        $setBlocksType(selection, () => $createHeadingNode(tag));
+      }
     });
   };
 
-  return <button onClick={onClick}>Heading</button>;
+  return (
+    <div>
+      {["h1", "h2", "h3"].map((tag) => (
+        <button
+          onClick={() => {
+            onClick(tag as "h1" | "h2" | "h3");
+          }}
+          key={tag}
+        >
+          {tag.toUpperCase()}
+        </button>
+      ))}
+    </div>
+  );
 }
 
 export default function EditorContent() {
@@ -46,7 +65,7 @@ export default function EditorContent() {
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <MyHeadingPlugin />
+      <HeadingPlugin />
       <RichTextPlugin
         contentEditable={
           <ContentEditable
