@@ -11,9 +11,14 @@ import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { $setBlocksType } from "@lexical/selection";
 
-// import styles from "./lexical.module.css";
-
 import "./styles.css";
+import { ListPlugin } from "@lexical/react/LexicalListPlugin";
+import {
+  INSERT_ORDERED_LIST_COMMAND,
+  INSERT_UNORDERED_LIST_COMMAND,
+  ListItemNode,
+  ListNode,
+} from "@lexical/list";
 
 const theme = {
   heading: {
@@ -30,9 +35,11 @@ function onError(error: Error) {
   console.error(error);
 }
 
-function HeadingPlugin() {
+type HeadingTag = "h1" | "h2" | "h3";
+function HeadingToolbarPlugin() {
   const [editor] = useLexicalComposerContext();
-  const onClick = (tag: "h1" | "h2" | "h3"): void => {
+  const headingTags: HeadingTag[] = ["h1", "h2", "h3"];
+  const onClick = (tag: HeadingTag): void => {
     editor.update(() => {
       const selection = $getSelection();
       if ($isRangeSelection(selection)) {
@@ -42,17 +49,54 @@ function HeadingPlugin() {
   };
 
   return (
-    <div>
-      {["h1", "h2", "h3"].map((tag) => (
+    <>
+      {headingTags.map((tag) => (
         <button
           onClick={() => {
-            onClick(tag as "h1" | "h2" | "h3");
+            onClick(tag as HeadingTag);
           }}
           key={tag}
         >
           {tag.toUpperCase()}
         </button>
       ))}
+    </>
+  );
+}
+
+type ListTag = "ol" | "ul";
+function ListToolbarPlugin() {
+  const [editor] = useLexicalComposerContext();
+  const listTags: ListTag[] = ["ol", "ul"];
+  const onClick = (tag: ListTag): void => {
+    if (tag === "ol") {
+      editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
+      return;
+    }
+    editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
+  };
+
+  return (
+    <>
+      {listTags.map((tag) => (
+        <button
+          onClick={() => {
+            onClick(tag as ListTag);
+          }}
+          key={tag}
+        >
+          {tag.toUpperCase()}
+        </button>
+      ))}
+    </>
+  );
+}
+
+function ToolbarPlugin() {
+  return (
+    <div>
+      <HeadingToolbarPlugin />
+      <ListToolbarPlugin />
     </div>
   );
 }
@@ -62,12 +106,13 @@ export default function EditorContent() {
     namespace: "MyEditor",
     theme,
     onError,
-    nodes: [HeadingNode],
+    nodes: [HeadingNode, ListNode, ListItemNode],
   };
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <HeadingPlugin />
+      <ToolbarPlugin />
+      <ListPlugin />
       <RichTextPlugin
         contentEditable={
           <ContentEditable

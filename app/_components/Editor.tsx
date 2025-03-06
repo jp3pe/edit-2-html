@@ -2,10 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { contentData, titleData } from "@/app/_mock/editor-data";
-import { EditableDynamicComponent } from "@/app/types/editable-dynamic-component";
+import { titleData } from "@/app/_mock/editor-data";
 
-import Toolbar from "@/app/_components/Toolbar";
 import Title from "@/app/_components/Title";
 import EditorContent from "@/app/_components/EditorContent";
 
@@ -45,8 +43,8 @@ export default function Editor() {
       /> */}
       <Title innerText={titleInnerText} />
       <EditorContent
-        // setToolbarDisplayPropertyValue={setToolbarDisplayPropertyValue}
-        // contentData={contentData as EditableDynamicComponent[]}
+      // setToolbarDisplayPropertyValue={setToolbarDisplayPropertyValue}
+      // contentData={contentData as EditableDynamicComponent[]}
       />
 
       <style jsx>{`
